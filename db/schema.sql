@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS employees;
 CREATE DATABASE employees;
 
-USE employees
+USE employees;
 
 CREATE TABLE department (
 id INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -13,7 +13,7 @@ id INTEGER AUTO_INCREMENT PRIMARY KEY,
 title VARCHAR(30) UNIQUE NOT NULL,
 salary DECIMAL NOT NULL,
 department_id INTEGER NOT NULL,
-INDEX dep_ind (department_id)
+INDEX dep_ind (department_id),
 CONSTRAINT fk_department FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE CASCADE
 );
 
