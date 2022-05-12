@@ -1,9 +1,12 @@
 const { prompt } = require('inquirer');
-const db = require('./db');
+const db = require('./db/connection');
+const logo = require('asciiart-logo');
 require('console.table');
 
+init();
+
 function init() {
-    const logoText = logo ({ name: 'Employee Manager' }).render();
+    const logoText = logo({ name: 'Pittsburgh Penguins' }).render();
 
     console.log(logoText);
 
@@ -73,3 +76,4 @@ function loadMainPrompts() {
         }
     ])
 }
+
