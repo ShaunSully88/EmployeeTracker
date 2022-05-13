@@ -1,22 +1,11 @@
-const { restoreDefaultPrompts } = require('inquirer');
-const { prompt } = require('inquirer');
-const Query = require('./lib/query');
-//const logo = require('asciiart-logo');
-require('console.table');
 
-init();
+const inquirer = require('inquirer');
+const db = require('./db/connection');
 
-function init() {
-    //const logoText = logo({ name: 'Pittsburgh Penguins' }).render();
 
-    //console.log(logoText);
-
-    loadMainPrompts();
-}
-
-function loadMainPrompts() {
+const loadMainPrompts = () => {
     inquirer
-    .prompt ([
+    .prompt([
         {
             type: 'list',
             name: 'choice',
@@ -25,21 +14,27 @@ function loadMainPrompts() {
             ]
         }
     ])
-    if (choice === 'Add Employee') {
-        employeePrompts();
-    } else if (choice === 'Add Role') {
-        rolePrompts();    
-    } else if (choice === 'Add Department') {
-        departmentPrompts();
-    } else if (choice === 'Update Role') {
-        updateRole();
-    } else if (choice === 'View all Employees') {
-        viewEmployees();
-    } else if (choice === 'View all Roles') {
-        viewRoles();
-    } else (choice === 'View all Departments') 
-        viewDepartments();  
-};
+    .then(function (ans) {
+        switch(ans.choice) {
+
+            case 'View all Departments':
+                viewDepartments();
+            case 'View all Roles':
+                viewRoles();
+            case 'View all Employees':
+                viewEmployees();
+            case 'Add Department':
+                departmentPrompts();
+            case 'Add Role':
+                rolePrompts();
+            case 'Add Employee':
+                employeePrompts();  
+            case 'Update Role': 
+                updateRole();
+        }
+    })
+};   
+    
 
 function employeePrompts() {
     inquirer.prompt([
@@ -175,5 +170,7 @@ function viewDepartments() {
         if (err) throw err;
         console.log('All departments listed');
     })
-};
-    
+};   
+
+
+loadMainPrompts();
