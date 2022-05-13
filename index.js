@@ -24,14 +24,7 @@ function loadMainPrompts() {
                     name: 'View All Employees',
                     value: 'VIEW_EMPLOYEES'
                 },
-                {
-                    name: 'View All Employees By Department',
-                    value: 'VIEW_EMPLOYEEDEP'
-                },
-                {
-                    name: 'View All Employees By Manager',
-                    value: 'VIEW_EMPLOYEEMAN'
-                },
+                
                 {
                     name: 'Add Employee',
                     value: 'ADD_EMPLOYEE'
