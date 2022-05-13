@@ -58,14 +58,14 @@ function employeePrompts() {
         {
             type: 'list',
             name: 'roleId',
-            message: 'What is the role id employee?',
+            message: 'What position does the employee play? Choose 1 for Center, 2 for Left Wing, 3 for Right Wing, 4 for Left Defense, 5 for Right Defense, 6 for Starting Goalie, 7 for Backup Goalie, 8 for Head Coach, or 9 for General Manager.',
             choices: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
         },
         {
             type: 'list',
             name: 'employeeManager',
-            message: "Who is Employee's Manager?",
+            message: "Who is Employee's Manager? Choose 1 for Sidney Crosby, 2 for Evgeni Malkin, 3 for Brian Dumolin, 4 for Kris Letang, 5 for Mike Sullivan, 6 for Ron Hextall, or 7 for Brian Burke.",
             choices: [1, 2, 3, 4, 5, 6, 7]
         }
     ])
@@ -75,6 +75,7 @@ function employeePrompts() {
     db.query(sql, [ans.firstName, ans.lastName, ans.roleId, ans.employeeManager], (err, res) => {
         if (err) throw err;
         console.log('New employee has been added.');
+        loadMainPrompts();
     });
     });
 }
@@ -82,29 +83,23 @@ function employeePrompts() {
 function rolePrompts() {
     inquirer.prompt([
         {
-            type: 'list',
-            name: 'title',
-            message: 'What role does the employee have?',
-            choices: ['Center', 'Left Wing', 'Right Wing', 'Left Defense', 'Right Defense', 'Starter', 'Head Coach', 'General Manager']
+            type: 'input',
+            name: 'newTitle',
+            message: 'What is the new Role?',
         },
         {
             type: 'input',
             name: 'salary',
             message: 'What is the salary of the employee?'
-        },
-        {
-            type: 'list',
-            name: 'departmentId',
-            message: 'What position does employee play?',
-            choices: ['Forward', 'Defense', 'Goalie', 'Brass']
         }
     ])
     .then( function (ans) {
-        const sql = `INSERT INTO role (title, salary, department_id)
-    VALUES (?,?,?)`;
-    db.query(sql, [ans.title, ans.salary, ans.departmentId], (err, res) => {
+        const sql = `INSERT INTO role (title, salary)
+    VALUES (?,?,?);`;
+    db.query(sql, [ans.newTitle, ans.salary], (err, res) => {
         if (err) throw err;
         console.log('New employee has been added.');
+        loadMainPrompts();
     });
     });
 };
@@ -123,6 +118,7 @@ function departmentPrompts() {
             db.query(sql, ans.departmentName, (err, res) => {
                 if (err) throw err;
                 console.log('New department has been added.');
+                loadMainPrompts();
             });
         
     });
@@ -130,14 +126,10 @@ function departmentPrompts() {
 
 function updateRole() {
    
-    db.query(sql, `SELECT * FROM employee`, (err, res) => {
-        if (err) throw err;
-    });
-
-    const employeeList = res.map((employee) =>
-    ({name: `${employee.first_name} ${employee.last_name}`, value: employee.id}));
-
-
+    db.query(`SELECT * FROM employee`, (err, res) => {
+        if(err) throw err
+    
+    const employeeList = res.map((employee) => ({name: employee.last_name + ", " + employee.first_name, value: employee.id}))
     inquirer.prompt([
         {
         type:'list',
@@ -146,13 +138,30 @@ function updateRole() {
         choices: employeeList
         },
         {
-            type: 'list',
-            name: 'updateRole',
-            message: "What is employee's new role?",
-            choices: ['Center', 'Left Wing', 'Right Wing', 'Left Defense', 'Right Defense', 'Starter', 'Head Coach', 'General Manager']
+        type: 'list',
+        name: 'oldRole',
+        message: "What is employee's old role id?",
+        choices: [1,2,3,4,5,6,7,8,9]
         },
-
+        {
+        type: 'list',
+        name: 'newRole',
+        message: "What is employee's new role id?",
+        choices: [1,2,3,4,5,6,7,8,9]
+        }  
+    
     ])
+    .then(function (ans) {
+    const sql = `UPDATE employee SET role_id = ? WHERE id = ?;`;
+    db.query(sql, [ans.newRole, ans.oldRole], (err, res) => {
+        if (err) throw err;
+        console.log("Employee's role has been changed.");
+        loadMainPrompts();
+    });
+    });
+});
+    
+
 };
 
 function viewEmployees() {
@@ -160,6 +169,7 @@ function viewEmployees() {
         db.query(sql, (err, rows) => {
             if (err) throw err;
             console.log('All employees listed alphabetically by last name');
+            loadMainPrompts();
         })
 };
 
@@ -168,6 +178,7 @@ function viewRoles() {
     db.query(sql, (err, rows) => {
         if (err) throw err;
         console.log('All roles listed.');
+        loadMainPrompts();
     })
 };
 
@@ -176,6 +187,7 @@ function viewDepartments() {
     db.query(sql, (err, rows) => {
         if (err) throw err;
         console.log('All departments listed');
+        loadMainPrompts();
     })
 };   
 
