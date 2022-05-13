@@ -19,18 +19,25 @@ const loadMainPrompts = () => {
 
             case 'View all Departments':
                 viewDepartments();
+                break;
             case 'View all Roles':
                 viewRoles();
+                break;
             case 'View all Employees':
                 viewEmployees();
+                break;
             case 'Add Department':
                 departmentPrompts();
+                break;
             case 'Add Role':
                 rolePrompts();
+                break;
             case 'Add Employee':
                 employeePrompts();  
+                break;
             case 'Update Role': 
                 updateRole();
+                break;
         }
     })
 };   
@@ -51,15 +58,15 @@ function employeePrompts() {
         {
             type: 'list',
             name: 'roleId',
-            message: 'What is the role of employee?',
-            choices: ['Center', 'Left Wing', 'Right Wing', 'Left Defense', 'Right Defense', 'Starter', 'Head Coach', 'General Manager']
+            message: 'What is the role id employee?',
+            choices: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
         },
         {
             type: 'list',
             name: 'employeeManager',
             message: "Who is Employee's Manager?",
-            choices: ['Crosby', 'Malkin', 'Letang', 'Dumolin', 'Sullivan', 'Hextall', 'Burke']
+            choices: [1, 2, 3, 4, 5, 6, 7]
         }
     ])
     .then( function (ans) {
