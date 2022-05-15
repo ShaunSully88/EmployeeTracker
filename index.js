@@ -94,12 +94,18 @@ function rolePrompts() {
             type: 'input',
             name: 'salary',
             message: 'What is the salary of the employee?'
+        },
+        {
+            type: 'list',
+            name: 'departmentId',
+            message: 'What Department is the new role in? 1 for Forward, 1 for Defense, 3 for Goalie, 4 for Brass.',
+            choices: [1,2,3,4] 
         }
     ])
     .then( function (ans) {
         const sql = `INSERT INTO role (title, salary, department_id)
     VALUES (?,?,?);`;
-    db.query(sql, [ans.newTitle, ans.salary], (err, res) => {
+    db.query(sql, [ans.newTitle, ans.salary, ans.departmentId], (err, res) => {
         if (err) throw err;
         console.log('New role has been added.');
         loadMainPrompts();
