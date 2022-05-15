@@ -4,6 +4,10 @@ const db = require('./db/connection');
 console.log('\r\n______ _ _   _       _                     _      ______                      _           \r\n| ___ (_) | | |     | |                   | |     | ___ \\                    (_)          \r\n| |_\/ \/_| |_| |_ ___| |__  _   _ _ __ __ _| |__   | |_\/ \/__ _ __   __ _ _   _ _ _ __  ___ \r\n|  __\/| | __| __\/ __| \'_ \\| | | | \'__\/ _` | \'_ \\  |  __\/ _ \\ \'_ \\ \/ _` | | | | | \'_ \\\/ __|\r\n| |   | | |_| |_\\__ \\ |_) | |_| | | | (_| | | | | | | |  __\/ | | | (_| | |_| | | | | \\__ \\\r\n\\_|   |_|\\__|\\__|___\/_.__\/ \\__,_|_|  \\__, |_| |_| \\_|  \\___|_| |_|\\__, |\\__,_|_|_| |_|___\/\r\n                                      __\/ |                        __\/ |                  \r\n                                     |___\/                        |___\/                   \r\n')
 
 
+
+// initial questions to ask User what they'd like to do, all answers converted to functions in switch statements.
+//This code runs at the end of each function, essentially bringing you back to main page so User can select new option.
+// Click arrow keys to initiate after completing questions specific to mainPrompt choice.
 const loadMainPrompts = () => {
     inquirer
     .prompt([
@@ -43,7 +47,7 @@ const loadMainPrompts = () => {
     })
 };   
     
-
+//Prompting User questions for adding new employee
 function employeePrompts() {
     inquirer
     .prompt([
@@ -82,6 +86,7 @@ function employeePrompts() {
     });
 }
 
+// prompting User for questions to add new role
 function rolePrompts() {
     inquirer
     .prompt([
@@ -113,6 +118,7 @@ function rolePrompts() {
     });
 };
 
+//prompting user questions to add new department
 function departmentPrompts() {
     inquirer
     .prompt([
@@ -134,6 +140,7 @@ function departmentPrompts() {
     });
 };
 
+//prompting user questions to update their current role
 function updateRole() {
    
     db.query(`SELECT * FROM employee`, (err, res) => {
@@ -175,6 +182,7 @@ function updateRole() {
 
 };
 
+//view list of all employees
 function viewEmployees() {
         const sql = `SELECT * FROM employee ORDER BY last_name`;
         db.query(sql, (err, results) => {
@@ -185,6 +193,7 @@ function viewEmployees() {
         loadMainPrompts();
 };
 
+//view List of all Roles
 function viewRoles() {
     const sql = `SELECT * FROM role`;
     db.query(sql, (err, results) => {
@@ -195,6 +204,7 @@ function viewRoles() {
     loadMainPrompts();
 };
 
+//view list of all Departments
 function viewDepartments() {
     const sql = `SELECT * FROM department`;
     db.query(sql, (err, results) => {
@@ -207,5 +217,5 @@ function viewDepartments() {
 
 
 
-
+//The application starter
 loadMainPrompts();
