@@ -38,7 +38,7 @@ const loadMainPrompts = () => {
                 break;
             case 'Update Role': 
                 updateRole();
-                break;
+                break;   
         }
     })
 };   
@@ -97,11 +97,11 @@ function rolePrompts() {
         }
     ])
     .then( function (ans) {
-        const sql = `INSERT INTO role (title, salary)
+        const sql = `INSERT INTO role (title, salary, department_id)
     VALUES (?,?,?);`;
     db.query(sql, [ans.newTitle, ans.salary], (err, res) => {
         if (err) throw err;
-        console.log('New employee has been added.');
+        console.log('New role has been added.');
         loadMainPrompts();
     });
     });
@@ -157,7 +157,7 @@ function updateRole() {
     
     ])
     .then(function (ans) {
-    const sql = `UPDATE employee SET role_id = ? WHERE id = ?;`;
+    const sql = `UPDATE employee SET role_id = ?;`;
     db.query(sql, [ans.newRole, ans.oldRole], (err, res) => {
         if (err) throw err;
         console.log("Employee's role has been changed.");
@@ -193,11 +193,13 @@ function viewDepartments() {
     const sql = `SELECT * FROM department`;
     db.query(sql, (err, results) => {
         if (err) throw err;
-        console.log('All departments listed');
+        console.log('All departments listed alphabetically');
         console.table(results)
     })
     loadMainPrompts();
 };   
+
+
 
 
 loadMainPrompts();
