@@ -3,6 +3,7 @@ const inquirer = require('inquirer');
 const db = require('./db/connection');
 
 
+
 const loadMainPrompts = () => {
     inquirer
     .prompt([
@@ -44,7 +45,8 @@ const loadMainPrompts = () => {
     
 
 function employeePrompts() {
-    inquirer.prompt([
+    inquirer
+    .prompt([
         {
             type: 'input',
             name: 'firstName',
@@ -81,7 +83,8 @@ function employeePrompts() {
 }
 
 function rolePrompts() {
-    inquirer.prompt([
+    inquirer
+    .prompt([
         {
             type: 'input',
             name: 'newTitle',
@@ -105,7 +108,8 @@ function rolePrompts() {
 };
 
 function departmentPrompts() {
-    inquirer.prompt([
+    inquirer
+    .prompt([
         {
             type: 'input',
             name: 'departmentName',
@@ -130,7 +134,8 @@ function updateRole() {
         if(err) throw err
     
     const employeeList = res.map((employee) => ({name: employee.last_name + ", " + employee.first_name, value: employee.id}))
-    inquirer.prompt([
+    inquirer
+    .prompt([
         {
         type:'list',
         name: 'updateEmployee',
@@ -166,29 +171,32 @@ function updateRole() {
 
 function viewEmployees() {
         const sql = `SELECT * FROM employee ORDER BY last_name`;
-        db.query(sql, (err, rows) => {
+        db.query(sql, (err, results) => {
             if (err) throw err;
             console.log('All employees listed alphabetically by last name');
-            loadMainPrompts();
+            console.table(results)
         })
+        loadMainPrompts();
 };
 
 function viewRoles() {
     const sql = `SELECT * FROM role`;
-    db.query(sql, (err, rows) => {
+    db.query(sql, (err, results) => {
         if (err) throw err;
         console.log('All roles listed.');
-        loadMainPrompts();
+        console.table(results)
     })
+    loadMainPrompts();
 };
 
 function viewDepartments() {
     const sql = `SELECT * FROM department`;
-    db.query(sql, (err, rows) => {
+    db.query(sql, (err, results) => {
         if (err) throw err;
         console.log('All departments listed');
-        loadMainPrompts();
+        console.table(results)
     })
+    loadMainPrompts();
 };   
 
 
